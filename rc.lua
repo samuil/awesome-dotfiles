@@ -139,7 +139,7 @@ tb_volume:buttons(awful.util.table.join(
   awful.button({ }, 1, function () volume("mute", tb_volume) end)
 ))
 
--- volume("update", tb_volume)
+volume("update", tb_volume)
 
 -- {{{ Wibox
 -- Create a textclock widget
