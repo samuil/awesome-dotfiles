@@ -7,6 +7,7 @@ require("beautiful")
 -- Notification library
 require("naughty")
 require("calendar2")
+require("battery")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -83,6 +84,13 @@ for s = 1, screen.count() do
 end
 -- }}}
 
+batterywidget = widget({type = "textbox", name = "batterywidget", align = "right"})
+bat_clo = battery.batclosure("BAT1")
+batterywidget.text = bat_clo()
+battimer = timer({timeout=30})
+battimer:add_signal("timeout", function() batterywidget.text = bat_clo() end)
+battimer:start()
+ 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
 myawesomemenu = {
@@ -226,6 +234,7 @@ for s = 1, screen.count() do
         mytextclock,
         s == 1 and mysystray or nil,
         s == 1 and tb_volume or nil,
+        s == 1 and batterywidget or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
@@ -411,4 +420,6 @@ end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+awful.util.spawn("parcellite")
 -- }}}
